@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuestra Boda - Carolina y Francisco</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --gold: #947532;
+            --offwhite: #FAF9F6; /* Blanco hueso */
+            --dark-gray: #333333;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--offwhite);
+            color: var(--dark-gray);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Pantalla de Bienvenida */
+        #welcome-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: var(--offwhite);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+
+        #welcome-screen h1 {
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--gold);
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-align: center;
+            font-style: italic;
+        }
+
+        .btn-open {
+            background-color: var(--gold);
+            color: var(--offwhite);
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            font-family: 'Montserrat', sans-serif;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(148, 117, 50, 0.4);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .btn-open:hover {
+            transform: scale(1.05);
+            background-color: #7a5e25;
+        }
+
+        /* Contenedor Principal */
+        #main-container {
+            position: relative;
+            min-height: 100vh;
+            display: none; /* Se activa con JS */
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            background-image: url('https://assets.cdn.filesafe.space/orLNFmqquwQDs4QXcbfS/media/6a763f4af15730d0a1b8b053.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        /* Animaciones para imágenes decorativas */
+        @keyframes float-slow {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(2deg); }
+            100% { transform: translateY(0) rotate(0deg); }
+        }
+
+        @keyframes float-reverse {
+            0% { transform: translateY(0) rotate(0deg) scaleX(-1); }
+            50% { transform: translateY(-20px) rotate(-2deg) scaleX(-1); }
+            100% { transform: translateY(0) rotate(0deg) scaleX(-1); }
+        }
+
+        .decorative-plant {
+            position: fixed;
+            width: 250px;
+            z-index: 1;
+            opacity: 0.8;
+            pointer-events: none;
+        }
+
+        .plant-top-left {
+            top: -20px;
+            left: -40px;
+            animation: float-slow 6s ease-in-out infinite;
+        }
+
+        .plant-bottom-right {
+            bottom: -20px;
+            right: -40px;
+            animation: float-reverse 7s ease-in-out infinite;
+        }
+
+        /* Tarjeta Glassmorphism */
+        .glass-card {
+            background: rgba(250, 249, 246, 0.65);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(250, 249, 246, 0.8);
+            border-radius: 20px;
+            padding: 40px 30px;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
+            z-index: 10;
+            position: relative;
+        }
+
+        .couple-photo {
+            width: 220px;
+            height: auto;
+            border-radius: 50%;
+            border: 4px solid var(--gold);
+            margin-bottom: 20px;
+            animation: float-slow 8s ease-in-out infinite;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .glass-card h2 {
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--gold);
+            font-size: 2.8rem;
+            margin-bottom: 5px;
+            line-height: 1.1;
+        }
+
+        .glass-card h3 {
+            font-weight: 300;
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .event-details {
+            margin-bottom: 30px;
+        }
+
+        .event-details p {
+            margin: 10px 0;
+            font-size: 1.1rem;
+        }
+
+        .event-details strong {
+            color: var(--gold);
+        }
+
+        .map-container {
+            width: 100%;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 300px;
+            display: block;
+        }
+
+        /* Formulario y Botones */
+        .rsvp-section {
+            background: rgba(255, 255, 255, 0.5);
+            padding: 25px 20px;
+            border-radius: 15px;
+            border: 1px solid rgba(148, 117, 50, 0.2);
+        }
+
+        .rsvp-section h4 {
+            color: var(--gold);
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            margin-bottom: 20px;
+            outline: none;
+            background: rgba(255,255,255,0.8);
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--gold);
+        }
+
+        .error-msg {
+            color: #d9534f;
+            font-size: 0.9rem;
+            margin-top: -15px;
+            margin-bottom: 15px;
+            display: none;
+            text-align: left;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-whatsapp {
+            background-color: #25D366;
+            color: white;
+            box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);
+        }
+
+        .btn-whatsapp:hover {
+            background-color: #1ebe5d;
+            transform: translateY(-2px);
+        }
+
+        .btn-calendar {
+            background-color: var(--gold);
+            color: white;
+            box-shadow: 0 4px 10px rgba(148, 117, 50, 0.3);
+        }
+
+        .btn-calendar:hover {
+            background-color: #7a5e25;
+            transform: translateY(-2px);
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .glass-card { padding: 30px 15px; }
+            .glass-card h2 { font-size: 2.2rem; }
+            .couple-photo { width: 180px; }
+            .decorative-plant { width: 150px; }
+            .map-container iframe { height: 250px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Audio de Fondo -->
+    <audio id="bgMusic" loop>
+        <source src="https://assets.cdn.filesafe.space/orLNFmqquwQDs4QXcbfS/media/6a764035488896ad5eecb304.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Pantalla de Bienvenida -->
+    <div id="welcome-screen">
+        <h1>Nuestra Boda</h1>
+        <button class="btn-open" onclick="openInvitation()">Abrir Invitación</button>
+    </div>
+
+    <!-- Contenido Principal -->
+    <div id="main-container">
+        
+        <!-- Imágenes decorativas flotantes -->
+        <img src="https://assets.cdn.filesafe.space/orLNFmqquwQDs4QXcbfS/media/6a76410caa9d1ff14cb5b09b.png" alt="Decoración" class="decorative-plant plant-top-left">
+        <img src="https://assets.cdn.filesafe.space/orLNFmqquwQDs4QXcbfS/media/6a76410caa9d1ff14cb5b09b.png" alt="Decoración" class="decorative-plant plant-bottom-right">
+
+        <!-- Contenedor Glassmorphism -->
+        <div class="glass-card">
+            
+            <img src="https://assets.cdn.filesafe.space/orLNFmqquwQDs4QXcbfS/media/6a764665dd9e4a38148fb4fc.jpg" alt="Carolina y Francisco" class="couple-photo">
+            
+            <h2>Carolina y Francisco</h2>
+            <h3>¡Nos casamos!</h3>
+            
+            <div class="event-details">
+                <p><strong>Fecha:</strong> 2 de Septiembre 2026</p>
+                <p><strong>Hora:</strong> 8:00 PM</p>
+                <p><strong>Lugar:</strong> Gran Salón del Valle</p>
+            </div>
+
+            <div class="map-container">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d30106.559927640305!2d-99.20578482568362!3d19.398575399999995!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d1ff984c6eea63%3A0x5c0439808fdd6cf3!2sGran%20Sal%C3%B3n%20del%20Valle!5e0!3m2!1ses-419!2smx!4v1786134964679!5m2!1ses-419!2smx" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+            </div>
+
+            <div class="rsvp-section">
+                <h4>Confirma tu asistencia</h4>
+                <input type="text" id="guestName" placeholder="Nombre del invitado*" required>
+                <div id="errorMsg" class="error-msg">Por favor, ingresa tu nombre para continuar.</div>
+                
+                <button class="action-btn btn-whatsapp" onclick="handleWhatsApp()">
+                    Confirmar por WhatsApp
+                </button>
+                <button class="action-btn btn-calendar" onclick="handleCalendar()">
+                    Guardar en Calendario
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function openInvitation() {
+            // Reproducir música
+            const audio = document.getElementById('bgMusic');
+            audio.play().catch(error => console.log("Autoplay prevenido por el navegador", error));
+            
+            // Ocultar bienvenida suavemente
+            const welcome = document.getElementById('welcome-screen');
+            welcome.style.opacity = '0';
+            
+            setTimeout(() => {
+                welcome.style.visibility = 'hidden';
+                welcome.style.display = 'none';
+                
+                // Mostrar contenido principal
+                const main = document.getElementById('main-container');
+                main.style.display = 'flex';
+            }, 800);
+        }
+
+        function validateName() {
+            const nameInput = document.getElementById('guestName').value.trim();
+            const errorMsg = document.getElementById('errorMsg');
+            
+            if (nameInput === "") {
+                errorMsg.style.display = "block";
+                return null;
+            } else {
+                errorMsg.style.display = "none";
+                return nameInput;
+            }
+        }
+
+        function handleWhatsApp() {
+            const name = validateName();
+            if (name) {
+                const phone = "5215587304748";
+                const text = encodeURIComponent(`Soy ${name} y confirmo mi asistencia para la fiesta.`);
+                const url = `https://wa.me/${phone}?text=${text}`;
+                window.open(url, '_blank');
+            }
+        }
+
+        function handleCalendar() {
+            const name = validateName();
+            if (name) {
+                // Generar contenido ICS
+                const icsContent = 
+`BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Nuestra Boda//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+SUMMARY:Boda de Carolina y Francisco
+DTSTART:20260902T200000
+DTEND:20260903T020000
+LOCATION:Gran Salón del Valle
+DESCRIPTION:¡Nos casamos! Invitado especial: ${name}. No faltes a nuestra celebración.
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR`;
+
+                // Crear un blob y forzar la descarga
+                const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'Boda_Carolina_y_Francisco.ics';
+                document.body.appendChild(a);
+                a.click();
+                
+                // Limpiar
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            }
+        }
+    </script>
+</body>
+</html>

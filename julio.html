@@ -177,7 +177,7 @@
     <div class="container">
         <!-- Página 1 -->
         <div class="page">
-            <img src="https://assets.cdn.filesafe.space/orLNFmqquwQDs4QXcbfS/media/6acdd07a883b04e61920d05c.png" alt="Bautizo Julio Sahir">
+            <img src="https://assets.cdn.filesafe.space/orLNFmqquwQDs4QXcbfS/media/6acdc5a1011eef2fd15d66ec.png" alt="Bautizo Julio Sahir">
         </div>
 
         <!-- Página 2 -->
@@ -249,14 +249,14 @@
             // Permitir el scroll
             document.body.classList.remove('locked');
             
-            // Reproducir el audio al interactuar (este es el truco para brincarse el bloqueo de los navegadores)
+            // Reproducir el audio al interactuar
             audio.play().then(() => {
                 playBtn.innerHTML = '⏸';
                 isPlaying = true;
             }).catch(err => console.log("Autoplay bloqueado o no disponible:", err));
         }
 
-        // Botón manual de audio (por si el usuario quiere pausar/reproducir la música después)
+        // Botón manual de audio
         function toggleAudio() {
             if (isPlaying) {
                 audio.pause();
@@ -269,8 +269,8 @@
             }
         }
 
-        // --- 2. Contador Regresivo ---
-        const countDownDate = new Date("Nov 07, 2026 09:00:00").getTime();
+        // --- 2. Contador Regresivo (Actualizado a las 3:00 PM / 15:00 hrs) ---
+        const countDownDate = new Date("Nov 07, 2026 15:00:00").getTime();
         const x = setInterval(function() {
             const now = new Date().getTime();
             const distance = countDownDate - now;
@@ -291,16 +291,17 @@
             }
         }, 1000);
 
-        // --- 3. Generador de Archivo .ICS ---
+        // --- 3. Generador de Archivo .ICS (Actualizado con horas) ---
         function downloadICS() {
+            // El evento inicia a las 15:00 y termina a las 18:00 (hora local del teléfono del invitado)
             const icsContent = `BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//Invitacion Digital//ES
 BEGIN:VEVENT
 UID:bautizo-julio-sahir-2026
 DTSTAMP:20261107T000000Z
-DTSTART;VALUE=DATE:20261107
-DTEND;VALUE=DATE:20261108
+DTSTART:20261107T150000
+DTEND:20261107T180000
 SUMMARY:Bautizo Julio Sahir
 DESCRIPTION:Acompáñanos a celebrar el bautizo de Julio Sahir.
 LOCATION:19.6201211,-99.3387118
@@ -319,7 +320,6 @@ END:VCALENDAR`;
 
         // --- 4. Modal y WhatsApp ---
         const modal = document.getElementById('rsvpModal');
-        // NÚMERO ACTUALIZADO
         const phone = "+525611482953";
 
         function openModal() {

@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bautizo Julio Sahir</title>
+    <!-- Fuente para textos superpuestos -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            background-color: #f0f4f8;
+            font-family: 'Montserrat', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px; /* Tamaño optimizado para móviles */
+            background-color: #fff;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .page {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        .page img {
+            width: 100%;
+            display: block;
+        }
+
+        /* --- Estilos interactivos superpuestos --- */
+        
+        /* Botón de Audio (Página 2) */
+        .audio-container {
+            margin: 20px 0 30px;
+            text-align: center;
+        }
+        .play-btn {
+            background-color: #4b6b8b;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: transform 0.2s, background-color 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto;
+        }
+        .play-btn:hover {
+            transform: scale(1.05);
+            background-color: #3a536c;
+        }
+        .audio-hint {
+            font-size: 0.8em;
+            color: #666;
+            margin-top: 10px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* Contador y Calendario (Página 3) */
+        .countdown-container {
+            margin-top: 10px;
+            margin-bottom: 25px;
+            text-align: center;
+            width: 90%;
+        }
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .time-box {
+            text-align: center;
+        }
+        .time-box span {
+            display: block;
+            font-size: 1.8em;
+            font-weight: 600;
+            color: #2c4a6b;
+        }
+        .time-box label {
+            font-size: 0.7em;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .calendar-btn {
+            background-color: #2c4a6b;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 0.9em;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 10px rgba(44, 74, 107, 0.3);
+            transition: background-color 0.3s;
+        }
+        .calendar-btn:hover { background-color: #1e3550; }
+
+        /* Mapa (Página 5) */
+        .map-container {
+            width: 85%;
+            margin: 10px auto 40px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            border: 3px solid #fff;
+        }
+        .map-container iframe {
+            width: 100%;
+            height: 300px;
+            display: block;
+        }
+
+        /* Botón Asistencia superpuesto (Página 6) */
+        .rsvp-trigger {
+            position: absolute;
+            top: 25%; /* Ajustado según la imagen 6 donde dice CONFIRMAR ASISTENCIA */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 15%;
+            background: transparent;
+            cursor: pointer;
+            border: 2px dashed rgba(44, 74, 107, 0.3); /* Solo para visualizar en desarrollo, cambiar a transparent después */
+            border-radius: 10px;
+        }
+
+        /* Modal Asistencia */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(3px);
+        }
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            width: 85%;
+            max-width: 350px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .modal-content h3 { color: #2c4a6b; margin-top: 0; }
+        .modal-content input {
+            width: 100%;
+            padding: 12px;
+            margin: 15px 0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 1em;
+            font-family: inherit;
+        }
+        .modal-btn {
+            background-color: #25D366; /* Verde WhatsApp */
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            width: 100%;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        .close-modal {
+            background: none;
+            border: none;
+            color: #999;
+            margin-top: 15px;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Página 1: Portada -->
+        <div class="page">
+            <img src="https://assets.cdn.filesafe.space/orLNFmqquwQDs4QXcbfS/media/6acdc5a1011eef2fd15d66ec.png" alt="Bautizo Julio Sahir">
+        </div>
+
+        <!-- Página 2: Papás y Audio -->
+        <div class="page" style="background-color: white;">
+            <img src="https://assets.cdn.filesafe.space/orLNFmqquwQDs4QXcbfS/media/6acdc5a1ed5644a05fe8e5aa.png" alt="Papás">
+            
+            <div class="audio-container">
+                <button class="play-btn" id="playBtn" onclick="toggleAudio()">▶</button>
+                <div class="audio-hint">Dale play a la música</div>
+                <!-- Audio Oculto -->
+                <audio id="bgMusic" src="https://assets.cdn.filesafe.space/orLNFmqquwQDs4QXcbfS/media/6acdc74ced5644a05fe910b7.mp3"></audio>
+            </div>
+        </div>
+
+        <!-- Página 3: Calendario, Contador y Descarga .ics -->
+        <div class="page" style="background-color: white;">
+            <img src="https://assets.cdn.filesafe.space/orLNFmqquwQDs4QXcbfS/media/6acdc5a1ed5644a05fe8e5b6.png" alt="Fecha">
+            
+            <div class="countdown-container">
+                <div class="countdown" id="countdown">
+                    <div class="time-box"><span id="days">00</span><label>Días</label></div>
+                    <div class="time-box"><span id="hours">00</span><label>Hrs</label></div>
+                    <div class="time-box"><span id="minutes">00</span><label>Min</label></div>
+                    <div class="time-box"><span id="seconds">00</span><label>Seg</label></div>
+                </div>
+                
+                <button class="calendar-btn" onclick="downloadICS()">
+                    📅 Agendar en mi calendario
+                </button>
+            </div>
+        </div>
+
+        <!-- Página 4: Padrinos -->
+        <div class="page">
+            <img src="https://assets.cdn.filesafe.space/orLNFmqquwQDs4QXcbfS/media/6acdc5a1011eef2fd15d66ff.png" alt="Padrinos">
+        </div>
+
+        <!-- Página 5: Ubicación / Mapa -->
+        <div class="page" style="background-color: white;">
+            <img src="https://assets.cdn.filesafe.space/orLNFmqquwQDs4QXcbfS/media/6acdc5a1412f76b5269bd511.png" alt="Ceremonia y Recepción">
+            
+            <div class="map-container">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d939.5420103058684!2d-99.33993492434807!3d19.620112359148155!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d2198e88f92c53%3A0xf6e06a4a15a9ea8b!2sC.%20Gabriela%20Mistral%2C%20El%20Trafico%2C%2054435%20Cdad.%20Nicol%C3%A1s%20Romero%2C%20M%C3%A9x.!5e0!3m2!1ses-419!2smx!4v1791870010534!5m2!1ses-419!2smx" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+
+        <!-- Página 6: RSVP -->
+        <div class="page">
+            <img src="https://assets.cdn.filesafe.space/orLNFmqquwQDs4QXcbfS/media/6acdc5a1883b04e6191fb899.png" alt="Confirmar Asistencia">
+            
+            <!-- Zona de clic invisible sobre la imagen -->
+            <div class="rsvp-trigger" onclick="openModal()" style="border: none;"></div>
+        </div>
+    </div>
+
+    <!-- Modal para Nombre de Asistente -->
+    <div class="modal-overlay" id="rsvpModal">
+        <div class="modal-content">
+            <h3>¡Nos alegra que asistas!</h3>
+            <p style="color: #666; font-size: 0.9em;">Por favor, ingresa tu nombre para confirmar con los papás.</p>
+            <input type="text" id="guestName" placeholder="Tu nombre y apellido" required>
+            <button class="modal-btn" onclick="sendWhatsApp()">
+                Confirmar por WhatsApp
+            </button>
+            <button class="close-modal" onclick="closeModal()">Cancelar</button>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. Controlador de Audio ---
+        const audio = document.getElementById('bgMusic');
+        const playBtn = document.getElementById('playBtn');
+        let isPlaying = false;
+
+        function toggleAudio() {
+            if (isPlaying) {
+                audio.pause();
+                playBtn.innerHTML = '▶';
+                isPlaying = false;
+            } else {
+                audio.play();
+                playBtn.innerHTML = '⏸';
+                isPlaying = true;
+            }
+        }
+
+        // --- 2. Contador Regresivo ---
+        // Fecha del evento: 07 de Noviembre de 2026 a las 09:00 AM
+        const countDownDate = new Date("Nov 07, 2026 09:00:00").getTime();
+
+        const x = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = countDownDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerHTML = days < 10 ? "0" + days : days;
+            document.getElementById("hours").innerHTML = hours < 10 ? "0" + hours : hours;
+            document.getElementById("minutes").innerHTML = minutes < 10 ? "0" + minutes : minutes;
+            document.getElementById("seconds").innerHTML = seconds < 10 ? "0" + seconds : seconds;
+
+            if (distance < 0) {
+                clearInterval(x);
+                document.getElementById("countdown").innerHTML = "<h3 style='color:#2c4a6b; margin:0;'>¡Llegó el gran día!</h3>";
+            }
+        }, 1000);
+
+        // --- 3. Generador de Archivo .ICS (Calendario) ---
+        function downloadICS() {
+            // Formato de fecha para .ics: YYYYMMDDTHHMMSSZ (UTC)
+            // Hora local 09:00 AM en CDMX suele ser +6 o +5 hrs en UTC, pero para simplicidad usamos un evento todo el día o una fecha estática bien formateada.
+            const icsContent = `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Invitacion Digital//ES
+BEGIN:VEVENT
+UID:bautizo-julio-sahir-2026
+DTSTAMP:20261107T000000Z
+DTSTART;VALUE=DATE:20261107
+DTEND;VALUE=DATE:20261108
+SUMMARY:Bautizo Julio Sahir
+DESCRIPTION:Acompáñanos a celebrar el bautizo de Julio Sahir.
+LOCATION:19.6201211,-99.3387118
+END:VEVENT
+END:VCALENDAR`;
+
+            const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Bautizo_Julio_Sahir.ics';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }
+
+        // --- 4. Modal y WhatsApp ---
+        const modal = document.getElementById('rsvpModal');
+        const phone = "+525587304748";
+
+        function openModal() {
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+            document.getElementById('guestName').value = '';
+        }
+
+        function sendWhatsApp() {
+            const guestName = document.getElementById('guestName').value.trim();
+            if (guestName === "") {
+                alert("Por favor, ingresa tu nombre.");
+                return;
+            }
+            
+            const message = `¡Hola! Confirmo mi asistencia al Bautizo de Julio Sahir. Mi nombre es: ${guestName} ✨`;
+            const encodedMessage = encodeURIComponent(message);
+            const waUrl = `https://wa.me/${phone}?text=${encodedMessage}`;
+            
+            window.open(waUrl, '_blank');
+            closeModal();
+        }
+    </script>
+</body>
+</html>
